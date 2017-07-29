@@ -1,0 +1,50 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Instagram Clone</title>
+</head>
+<body>
+    <body style="background:url(http://wallpapercave.com/wp/Rdw9lLo.jpg)fixed;background-position:centre;background-size:cover;;background-repeat:no-repeat;width:auto;height:auto;"><center><font>
+         <div class="main">
+             <font size="4">
+                 <font face="Digital, Arial, Helvetica, sans-serif">
+                     <font color="black">
+            <h1> Instagram Clone</h1>
+            <h4>Sign Up </h4>
+    </div>
+
+    <div>
+        <form action="" method="post">
+        {% csrf_token%}
+            <div>
+                <label for="username">Username: </label>
+                <input id="username" type="text" size="30" name="username" value={{ username }}>
+            </div><br><br>
+
+            <div>
+                <label for="name">Name     : </label>
+                <input id="name" type="text" size="33" name="name" value={{ name }}>
+            </div><br><br>
+
+            <div>
+                <label for="email">Email   :   </label>
+                <input id="email" type="text" size="33" name="email" value={{ email }}>
+            </div><br><br>
+
+            <div>
+                <label for="password">Password: </label>
+                <input id="password" type="password" size="30" name="password" value={{ password }}>
+            </div><br><br>
+                <input type="submit" value="Sign Up">
+        </form>
+
+
+    </div><br><br>
+
+    <div><h3>Already a user?</h3><a href="login/">Login</a> </div>
+    </font></font></font></center>
+</body>
+</html>
