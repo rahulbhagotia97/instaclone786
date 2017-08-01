@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Reviews</title>
+</head>
+<body><center>
+ <body bgcolor="blue"></body>
+        <form method="post" action="/post/">
+       {% csrf_token %}
+       {{ form }}<br><br><br><br>
+       <input type="submit" class="btn btn-default" size="10" value="create my product post">
+
+
+    {% for post in posts %}
+        <h3> Posted by: {{ product.user.username }} </h3>
+        <p>[{{ product.created_on }}]</p>
+        <img style="display:inline-block; width:360px; height:320px;"
+          img src="{{ product.image_url }}" /><br>
+        <span  style="display:inline-block;">{{ product.caption }}</span><br/><br/>
+        </div>
+         <div>
+            <form method="POST" action="/review/">
+                {% csrf_token %}
+                <input type="hidden" name="product" value="{{ product.id }}" />
+                <input type="text" name="review_text" id="review_text" placeholder="Add a review.." value="{{ review_text }}">
+                {{ review_text }}
+                <input type="submit" class="btn-default btn" value="review">
+            </form>
+        </div>
+
+        <div>
+            {% for comment in post.comments %}
+                <p><b>{{ review.user.username }} [{{ review.created_on }}]:</b> {{ review.review_text }}</p>
+            {% endfor %}
+        </div>
+            {% endfor %}
+               <input type="submit" class="btn btn-default" size="10" value="search">
+        {{form}}</center></body>
+</html>

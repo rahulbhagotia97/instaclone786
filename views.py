@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
-from forms import SignUpForm, LoginForm, PostForm, LikeForm, CommentForm ,UpvotingForm
-from models import UserModel, SessionToken, PostModel, LikeModel, CommentModel
+from django.template import Context, RequestContext
+from django.shortcuts import render_to_response, get_object_or_404
+from forms import SignUpForm, LoginForm, PostForm, LikeForm, CommentForm ,UpvotingForm , ProductForm
+from models import UserModel, SessionToken, PostModel, LikeModel, CommentModel, ReviewModel, ProductModel
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth import logout
 from datetime import timedelta
@@ -13,6 +15,10 @@ from imgurpython import ImgurClient
 CLIENT_ID = "19dd19a5793b141"
 CLIENT_SECRET = "0ccfd1904a6a8707a06f9ac99df39da1072a6af5"
 
+PARALLEL_DOTS_KEY = "3BGXwiNiSiIotjitcAogTSIDBN2wHmDqo7TtrJGqOKw"
+
+veriifcation_code = '088145235648fs689sa56h'
+user_id = '854'
 
 # Create your views here.
 
@@ -132,19 +138,68 @@ def comment_view(request):
             comment_text = form.cleaned_data.get('comment_text')
             comment = CommentModel.objects.create(user=user, post_id=post_id, comment_text=comment_text)
             comment.save()
-            set_api_key('3BGXwiNiSiIotjitcAogTSIDBN2wHmDqo7TtrJGqOKw')
-            response = emotion("happy")
-            print response
             return redirect('/feed/')
         else:
             return redirect('/feed/')
     else:
         return redirect('/login')
 
-def review_comment(commenttext):
+def search_view(request):
+    user = check_validation(request)
+    if user:
+        if request.method == 'GET':
+    verification_code = request.GET.get('verification_code')
+    user_id = request.GET.get('user_id')
+
+    context = {
+        'verification_code': verification_code,
+        'user_id': verification_url,
+    }
+    return render_to_response('search.html', context, context_instance = RequestContext(request))
+
+def product_view(request):
+    user = check_validation(request)
+    if user:
+        if request.method == 'POST':
+            form = ProductForm(request.POST, request.FILES)
+            if form.is_valid():
+                image = form.cleaned_data.get('image')
+                caption = form.cleaned_data.get('caption')
+                review = ProductModel(user=user, image=image, caption=caption)
+                review.save()
+
+                path = str(BASE_DIR + '/' + product.image.url)
+
+                client = ImgurClient(CLIENT_ID, CLIENT_SECRET)
+                product.image_url = client.upload_from_path(path, anon=True)['link']
+                product.save()
+
+                return redirect('/products/')
+
+            else:
+                return render(request, 'feed.html', {'form': form})
+        else:
+            return redirect('/post/')
+
+def review_view(request):
+    user = check_validation(request)
+    if user and request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            product_id = form.cleaned_data.get('product').id
+            review_text = form.cleaned_data.get('review_text')
+            review = ReviewModel.objects.create(user=user, product_id=product_id, review_text=review_text)
+            review.save()
+            return redirect('/products/')
+        else:
+            return redirect('/products/')
+    else:
+        return redirect('/feed/')
+
+def review_review(reviewtext):
     req_json = none
     req_url = "https://apis.paralleldots.com/emotion"
-    "text" : "commenttext",
+    "text" : "reviewtext",
     "set_apikey" : "3BGXwiNiSiIotjitcAogTSIDBN2wHmDqo7TtrJGqOKw"
 }
     # 1 is for positive tag and 0 is for negative tag

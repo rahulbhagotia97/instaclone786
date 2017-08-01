@@ -1,5 +1,5 @@
 from django import forms
-from models import UserModel, PostModel, LikeModel, CommentModel
+from models import UserModel, PostModel, LikeModel, CommentModel, ProductModel, ReviewModel
 
 
 class SignUpForm(forms.ModelForm):
@@ -33,3 +33,15 @@ class CommentForm(forms.ModelForm):
 
 class UpvotingForm(forms.ModelForm):
     userid = forms.IntegerField()
+
+class ProductForm(forms.ModelForm)
+
+    class Meta:
+        model = ProductModel
+        fields=['image','caption']
+
+class ReviewForm(forms.ModelForm):
+
+    class Meta:
+        model = ReviewModel
+        fields = ['review_text', 'product']

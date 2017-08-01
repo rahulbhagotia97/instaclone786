@@ -54,3 +54,23 @@ class CommentModel(models.Model):
 	comment_text = models.CharField(max_length=555)
 	created_on = models.DateTimeField(auto_now_add=True)
 	updated_on = models.DateTimeField(auto_now=True)
+
+class ProductModel(models.Model):
+	user = models.ForeignKey(UserModel)
+	image = models.FileField(upload_to='product_images')
+	image_url = models.CharField(max_length=225)
+	caption = models.CharField(max_length=220)
+	created_on = models.DateTimeField(auto_now_add=True)
+	updated_on = models.DateTimeField(auto_now=True)
+	has_reviewed = False
+
+	@property
+	def reviews(self):
+		return ReviewModel.objects.filter(post=self).order_by('-created_on')
+
+class ReviewModel(models.Model):
+	user = models.ForeignKey(UserModel)
+	post = models.ForeignKey(PostModel)
+	review_text = models.CharField(max_length=555)
+	created_on = models.DateTimeField(auto_now_add=True)
+	updated_on = models.DateTimeField(auto_now=True)
