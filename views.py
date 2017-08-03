@@ -20,7 +20,7 @@ PARALLEL_DOTS_KEY = "3BGXwiNiSiIotjitcAogTSIDBN2wHmDqo7TtrJGqOKw"
 veriifcation_code = '088145235648fs689sa56h'
 user_id = '854'
 
-# Create your views here.
+# function declaration for signup
 
 def signup_view(request):
     if request.method == "POST":
@@ -40,6 +40,7 @@ def signup_view(request):
 
     return render(request, 'index.html', {'form': form})
 
+# function declaration for login
 
 def login_view(request):
     response_data = {}
@@ -67,6 +68,7 @@ def login_view(request):
     response_data['form'] = form
     return render(request, 'login.html', response_data)
 
+# function declaration for posts
 
 def post_view(request):
     user = check_validation(request)
@@ -94,6 +96,7 @@ def post_view(request):
     else:
         return redirect('/login/')
 
+# function declaration for feeds
 
 def feed_view(request):
     user = check_validation(request)
@@ -111,6 +114,8 @@ def feed_view(request):
 
         return redirect('/login/')
 
+# function declaration for liking a post
+
 def like_view(request):
     user = check_validation(request)
     if user and request.method == 'POST':
@@ -127,7 +132,7 @@ def like_view(request):
         return redirect('/login/')
 
 
-
+# function declaration for commenting on a post
 
 def comment_view(request):
     user = check_validation(request)
@@ -144,6 +149,8 @@ def comment_view(request):
     else:
         return redirect('/login')
 
+# function declaration
+
 def search_view(request):
     user = check_validation(request)
     if user:
@@ -156,6 +163,8 @@ def search_view(request):
         'user_id': verification_url,
     }
     return render_to_response('search.html', context, context_instance = RequestContext(request))
+
+# function declaration for uploading products related post
 
 def product_view(request):
     user = check_validation(request)
@@ -180,6 +189,8 @@ def product_view(request):
                 return render(request, 'feed.html', {'form': form})
         else:
             return redirect('/post/')
+
+# function declaration for adding reviews on products post
 
 def review_view(request):
     user = check_validation(request)
@@ -212,6 +223,7 @@ def review_review(reviewtext):
                 else:
                     return 0
 
+# function declaration for upvoting comment
 
 def upvoting_view(request):
     user = check_validation(request)
@@ -241,6 +253,7 @@ def upvoting_view(request):
     else:
         return redirect('/login/')
 
+# function declaration for logging out
 
 def logout_view(request):
     user=check_validation(request)
@@ -253,6 +266,7 @@ def logout_view(request):
             return redirect('/feeds/')
 
 # For validating the session
+
 def check_validation(request):
     if request.COOKIES.get('session_token'):
         session = SessionToken.objects.filter(session_token=request.COOKIES.get('session_token')).first()
